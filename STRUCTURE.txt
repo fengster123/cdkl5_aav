@@ -1,0 +1,44 @@
+CDKL5 AAV Gene Therapy Comparison - Repository Structure
+=========================================================
+
+cdkl5_aav/
+│
+├── README.md                           # Comprehensive project documentation
+├── ai_prompts.md                       # Original project goals and prompts
+├── .gitignore                          # Git ignore rules
+│
+├── data/                               # All data files
+│   ├── raw/                            # Raw extracted data from papers
+│   │   ├── ptc_cdkl5.pdf               # PTC source paper (PDF)
+│   │   ├── ptc_raw_data.py             # PTC extracted data (Python dict)
+│   │   ├── jim_wilson_cdkl5.pdf        # Wilson source presentation (PDF)
+│   │   └── jim_wilson_raw_data.py      # Wilson extracted data (Python dict)
+│   │
+│   └── processed/                      # Processed/normalized data
+│       └── comparison_data.py          # Normalized comparison data + conversion functions
+│
+├── analysis/                           # Analysis plans and methodologies
+│   └── comparison_plan.md              # Detailed comparison methodology
+│
+├── reports/                            # Final comparison reports
+│   └── comparison_report.md            # Comprehensive side-by-side comparison
+│
+└── cdkl5_aav/                          # Python package (future analysis scripts)
+    └── __init__.py                     # Package initialization
+
+Key Files:
+-----------
+📊 Main Report:     reports/comparison_report.md
+📁 Raw Data:        data/raw/*.py (PTC & Wilson dictionaries)
+🔧 Analysis Tools:  data/processed/comparison_data.py
+📋 Methodology:     analysis/comparison_plan.md
+📖 Documentation:   README.md
+
+Best Practices Applied:
+-----------------------
+✅ Separation of concerns: raw data / processed data / analysis / reports
+✅ Clear naming conventions: {study_name}_{data_type}.{ext}
+✅ Consistent schema: Both raw_data.py files follow same structure
+✅ Reusable functions: conversion utilities in comparison_data.py
+✅ Comprehensive docs: README with usage examples
+✅ Version control: .gitignore configured for Python projects

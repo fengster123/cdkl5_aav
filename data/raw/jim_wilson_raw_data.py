@@ -1,4 +1,4 @@
-jim_wilson_meta_data = {
+jim_wilson_raw_data = {
     "paper_id": "Wilson_UPenn_CDKL5_AAV_PHPeB_Presentation",
     "citation": {
         "title": "CDKL5 Deficiency Disorder Gene Therapy Development",
