@@ -1,4 +1,9 @@
+
+# NOTE THAT AS OF 2025-01-05, the comparison_report.md is NOT accurate. we have yet checked the raw_data.py files, ie they might not reflect the true data presented in the pdf
+
 # CDKL5 AAV Gene Therapy Research Comparison
+
+
 
 A comprehensive comparison of two AAV gene therapy approaches for CDKL5 Deficiency Disorder (CDD):
 - **PTC Therapeutics**: AAV9 + Synapsin promoter + ICV delivery
