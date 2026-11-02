@@ -22,7 +22,7 @@ Source: `cdkl5_cn_survey (20240902).xlsx`, sheet `智能表1`. 225 rows.
 | 伊伊 | 北京 | 2024 | c.585G>T |
 | 小鱼儿 | 陕西西安 | 2023 | c.377G>A |
 | 刘梓轩 | 广东东莞 | 2018 | c.1851delT |
-| 雯雯 | 安徽 合肥 | 2022 | c.64+2 |
+| 雯雯 | 安徽 合肥 | 2022 | c.64+2de1T |
 | 小小浠 | 安徽宿州 | 2023 | c.365C>T |
 | 科宇 | 广东茂名 | 2022 | c.2635_2636delCT |
 | 汐仔 | 广东广州市 | 2022 | c.2635_2636del |
@@ -161,7 +161,7 @@ Source: `cdkl5_cn_survey (20240902).xlsx`, sheet `智能表1`. 225 rows.
 | 小语 | 山东省济南市 | 2020 | c.64G>T |
 | 烨烨 | 湖南省岳阳市 | 2018 | c.1330delC |
 | 罗丹 | 云南省大理州弥渡县弥城镇 | 2019 | c.1024delinsGCTTCACAGATCTGCTTTGCAGTCTCACC |
-| Amy | 河南 | 2020 | c.2578C〉T |
+| Amy | 河南 | 2020 | c.2578C>T |
 | 泡芙 | 陕西榆林 | 2022 | c.463+2T>C |
 | 汪若彤 | 湖北 | 2016 | c.343dupT |
 | 米乐 | 河南新乡市 | 2017 | c.122T>A |
@@ -281,8 +281,12 @@ Source: `cdkl5_cn_survey (20240902).xlsx`, sheet `智能表1`. 225 rows.
 - 甜甜 — raw `cdkl5基因突变`
 - 侨妤 — raw `seq【grch37】dup（1）（p22.2p22.2）/nc-000001.10:g.89410810-89562839dup`
 
-### 基因变异点位 worth a human look (3)
+### 基因变异点位 worth a human look (6)
 
+- 鑫鑫 — extracted `c.41A>G` from raw `C.41A>GP.Glu14Gly`  
+  stopped at prose glued to the base change
+- 小小浠 — extracted `c.365C>T` from raw `c.365C>Tp.A122V`  
+  stopped at prose glued to the base change
 - 沫沫 — extracted `c.1854_1861delCAAAGTGA` from raw `c.1854_1861d
 elCAAAGTG
 A(p.D618Efs*18）`  
@@ -293,3 +297,5 @@ c.2816G>T(p.Gly939Val)`
 - 吴承励 — extracted `c.574_581delGTGGACAT` from raw `   c.574_581del GTGGACAT
 (p.Asp193fs)`  
   OCR spacing merged two letter runs; bases need checking
+- Amy — extracted `c.2578C>T` from raw `c.2578C〉Tp.Q860*，171`  
+  stopped at prose glued to the base change

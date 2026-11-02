@@ -37,6 +37,11 @@ from pathlib import Path
 
 import pandas as pd
 
+from projects.chinese_mutations_survey.cdna_tokens import (
+    extract_cdna as _extract_cdna,
+    norm_width as _norm_width,
+)
+
 HERE = Path(__file__).resolve().parent
 XLSX = HERE / "cdkl5_cn_survey (20240902).xlsx"
 SHEET = "智能表1"
@@ -53,83 +58,7 @@ N_COLS = 20        # 智能表1 width
 
 OUT_COLS = ["宝贝昵称", "所在地区（省市）", "出生年份", "基因变异点位"]
 
-# A cDNA token starts at 'c' followed by an optional separator and a position.
-# The lookbehind rejects look-alikes such as 'grch37' and 'nc-000001'.
-CDNA_START_RE = re.compile(r"(?<![A-Za-z])[cC]\s*[.,:·\-]?\s*[A-Za-z]?\s*[\*\-]?\s*\d+")
-TOKEN_STOP_CHARS = set("/｜|()【】,，:：")
-# '(' ... ')' holding only an exon/intron label, e.g. '( exon8)', '(IVS5)', '(1VS16)'.
-PAREN_ANNOT_RE = re.compile(r"(?i)^\s*(?:exon|ivs|intron|e)?\s*[0-9ivs]{1,8}\s*$")
-PAREN_ANNOT_SPAN_RE = re.compile(r"\(\s*(?:(?:exon|ivs|intron|e)?\s*[0-9ivs]{1,8})\s*\)", re.IGNORECASE)
-# Each separate cDNA variant; 'c.507_c.508delAG' is one variant, not two.
-MULTI_VARIANT_RE = re.compile(r"(?<![_\w])[cC]\.")
-
 YEAR_RE = re.compile(r"(19|20)\d{2}")
-
-
-def _norm_width(text: str) -> str:
-    """Full-width punctuation -> ASCII. Nothing else."""
-    return (
-        text.replace("＞", ">").replace("＜", "<").replace("（", "(").replace("）", ")")
-        .replace("：", ":").replace("，", ",").replace("ｃ", "c").replace("．", ".")
-        .replace("\u3000", " ")
-    )
-
-
-def _extract_cdna(norm: str) -> tuple[str | None, list[str]]:
-    """Pull the cDNA token out of a mutation cell, plus any review notes."""
-    m = CDNA_START_RE.search(norm)
-    if not m:
-        return None, []
-
-    notes: list[str] = []
-    start, j = m.start(), m.end()
-    while j < len(norm):
-        ch = norm[j]
-
-        # An exon/intron annotation wedged inside the token ('c.533( exon8)G>A',
-        # 'c.282+3(IVS5)A>C') is skipped when the base change resumes after it.
-        if ch == "(":
-            close = norm.find(")", j + 1)
-            inner = norm[j + 1: close] if close != -1 else ""
-            after = norm[close + 1:].lstrip()[:1] if close != -1 else ""
-            if PAREN_ANNOT_RE.match(inner) and after.upper() in {"A", "C", "G", "T", "U"}:
-                j = close + 1
-                continue
-            break
-
-        if ch in TOKEN_STOP_CHARS:
-            break
-        if norm[j:j + 2] in ("p.", "P."):
-            break
-        if ch.isspace():
-            nxt = norm[j + 1:].lstrip()
-            # a protein annotation (even a malformed one), Chinese text, or a
-            # non-cDNA word ends the token
-            if re.match(r"[pP]\s*[.,]", nxt) or re.match(r"[pP][A-Z]", nxt):
-                break
-            if re.match(r"[\u4e00-\u9fff]", nxt):
-                break
-            if re.match(r"(?i)(splice|intron|ivs|exon)", nxt):
-                break
-            if norm[j - 1].isalpha() and nxt[:1].isalpha():
-                notes.append("OCR spacing merged two letter runs; bases need checking")
-        j += 1
-
-    token = norm[start:j]
-    # drop the exon/intron label that was skipped over inside the token
-    token = PAREN_ANNOT_SPAN_RE.sub("", token)
-    token = re.sub(r"\s+", "", token).rstrip("/-.,，:：")
-    if not token:
-        return None, notes
-
-    if len(MULTI_VARIANT_RE.findall(norm)) > 1:
-        notes.append("cell lists more than one variant; only the first was kept")
-
-    # HGVS writes the prefix lowercase and a dot separator; the rest is untouched.
-    if len(token) > 1 and token[0] == "C":
-        token = "c" + token[1:]
-    token = re.sub(r"^([cC])[·]", r"\1.", token)
-    return token, list(dict.fromkeys(notes))
 
 
 def dna_mutation(raw) -> tuple[str | None, list[str]]:
